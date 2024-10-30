@@ -71,12 +71,16 @@ def make_prediction(model, scalerX, scalerY, input_values):
     return predicted_price[0][0]
 
 
-
+st.sidebar.page_link('pages/cabbage.py', label='배추')
+st.sidebar.page_link('pages/pepper.py', label='고추')
+st.sidebar.page_link('pages/onion.py', label='양파')
+st.sidebar.page_link('pages/radish.py', label='무')
+st.sidebar.page_link('pages/garlic.py', label='마늘')
+st.sidebar.markdown('-----------')
 
 
 with st.sidebar:
-    choice = option_menu('Menu',['배추','양파','고추','무','마늘'],
-                          menu_icon="cast")
+    
     수출액 = st.slider('수출금액를 선택하세요. (만원)',float(df['수출액'].min()),float(df['수출액'].max()))
     수출량 = st.slider('수출량을 선택하세요. (kg)',float(df['수출량'].min()),float(df['수출량'].max()))
     평균기온 = st.slider('평균기온을 선택하세요.',-20,40)

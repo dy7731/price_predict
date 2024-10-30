@@ -11,8 +11,9 @@ from keras.models import Sequential
 from keras.optimizers import Adam
 from streamlit_option_menu import option_menu
 
-df = pd.read_csv(('./cabbage_week.csv'), index_col='week', encoding="cp949")
+st.set_page_config(layout="wide")
 
+df = pd.read_csv(('./cabbage_week.csv'), index_col='week', encoding="cp949")
 
 @st.cache_resource
 def train_lstm_model(data, target_column):
@@ -121,7 +122,7 @@ st.line_chart(
         pepper,
         x="week",
         y=["Predicted Values", "actual Values"],
-        color=["#FF0000", "#0000FF"])
+        color=[ "#32CD32", "#D3D3D3"])
 
 
 

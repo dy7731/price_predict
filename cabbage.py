@@ -13,6 +13,42 @@ from streamlit_option_menu import option_menu
 
 st.set_page_config(layout="wide")
 
+st.markdown(
+    """
+    <style>
+    /* 페이지 배경 */
+    .stApp {
+        background-color: #E8F5E9;
+        color: #2E7D32;
+        font-family: serif;
+    }
+    
+    /* 사이드바 배경 */
+    .css-1d391kg {
+        background-color: #A5D6A7;
+    }
+
+    /* 버튼 색상 */
+    .stButton>button {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    /* 기본 텍스트 색상 */
+    .css-10trblm {
+        color: #2E7D32;
+    }
+
+    /* 입력 필드 및 상호작용 요소 색상 */
+    .css-1aumxhk {
+        color: #2E7D32;
+        background-color: #ffffff;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 df = pd.read_csv(('./cabbage_week.csv'), index_col='week', encoding="cp949")
 
 @st.cache_resource

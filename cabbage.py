@@ -15,7 +15,7 @@ st.set_page_config(layout="wide")
 
 
 
-df = pd.read_csv(('./cabbage_week.csv'), index_col='week', encoding="cp949")
+df = pd.read_csv(('./csv/cabbage_week.csv'), index_col='week', encoding="cp949")
 
 @st.cache_resource
 def train_lstm_model(data, target_column):
@@ -98,7 +98,7 @@ with st.sidebar:
 
 
 
-pepper = pd.read_csv('./cabbage_predicted.csv', encoding="cp949")
+pepper = pd.read_csv('./csv/cabbage_predicted.csv', encoding="cp949")
 
 pepper['week'] = pd.to_datetime(pepper['week'])
 

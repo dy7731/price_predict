@@ -116,10 +116,4 @@ st.line_chart(
 
 
 
-st.text('\n')
-st.header(' Shap value graph')
-st.text('\n')
 
-st.image('고추1.png')
-st.text('waterfall 그래프')
-st.image('고추2.png')

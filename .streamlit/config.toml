@@ -5,5 +5,5 @@ showSidebarNavigation = false
 primaryColor = "white"  
 backgroundColor = "#E8F5E9"  # 밝은 녹색 배경
 secondaryBackgroundColor = "#A5D6A7"  # 연두색 사이드바
-textColor = "#2E7D32"  # 진한 녹색 텍스트
+textColor = "black"  # 진한 녹색 텍스트2E7D32
 font = "sans serif"

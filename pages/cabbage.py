@@ -10,6 +10,7 @@ from keras.layers import LSTM, Dense, Dropout
 from keras.models import Sequential 
 from keras.optimizers import Adam
 from streamlit_option_menu import option_menu
+st.set_page_config(layout="wide")
 
 df = pd.read_csv(('./csv/cabbage_week.csv'), index_col='week', encoding="cp949")
 
@@ -122,7 +123,7 @@ st.line_chart(
         pepper,
         x="week",
         y=["Predicted Values", "actual Values"],
-        color=["#FF0000", "#0000FF"])
+        color=["#D3D3D3", "#32CD32"])
 
 
 

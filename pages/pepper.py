@@ -13,9 +13,9 @@ from streamlit_option_menu import option_menu
 
 st.set_page_config(layout="wide")
 
-@st.cache_resource
-df=pd.read_csv('./csv/pepper_week.csv', index_col='week', encoding="utf-8")
+df = pd.read_csv('./csv/pepper_week.csv', index_col='week', encoding="utf-8")
 
+@st.cache_resource
 def train_lstm_model(data, target_column):
     
     X = data[['물가지수', '평균기온', '최저기온']]  

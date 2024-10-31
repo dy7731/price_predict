@@ -11,7 +11,7 @@ from keras.models import Sequential
 from keras.optimizers import Adam
 from streamlit_option_menu import option_menu
 
-df = pd.read_csv('./csv/pepper.csv', index_col='week', encoding="utf-8")
+df = pd.read_csv('./csv/pepper_week.csv', index_col='week', encoding="utf-8")
 
 def train_lstm_model(data, target_column):
     

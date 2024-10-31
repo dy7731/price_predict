@@ -65,12 +65,12 @@ def make_prediction(model, scalerX, scalerY, input_values):
     return predicted_price[0][0]
 
 
+st.sidebar.page_link('pages/cabbage.py', label='배추', icon='🥬')
+st.sidebar.page_link('pages/pepper.py', label='고추', icon='🌶️')
+st.sidebar.page_link('pages/onion.py', label='양파', icon='🧅')
+st.sidebar.page_link('pages/radish.py', label='무', icon='')
+st.sidebar.page_link('pages/garlic.py', label='마늘', icon='🧄')
 
-st.sidebar.page_link('pages/cabbage.py', label='배추')
-st.sidebar.page_link('pages/pepper.py', label='고추')
-st.sidebar.page_link('pages/onion.py', label='양파')
-st.sidebar.page_link('pages/radish.py', label='무')
-st.sidebar.page_link('pages/garlic.py', label='마늘')
 st.sidebar.markdown('-----------')
 
 

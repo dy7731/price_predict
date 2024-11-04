@@ -75,11 +75,7 @@ def calculate_metrics(y_true, y_pred):
     mape = np.mean(np.abs((y_true - y_pred) / y_true)) * 100  # 퍼센트로 변환
     return mae, rmse, mape
 
-st.sidebar.page_link('pages/cabbage.py', label='배추')
-st.sidebar.page_link('pages/pepper.py', label='고추')
-st.sidebar.page_link('pages/onion.py', label='양파')
-st.sidebar.page_link('pages/radish.py', label='무')
-st.sidebar.page_link('pages/garlic.py', label='마늘')
+
 
 with st.sidebar:
     수입액 = st.slider('수입액를 선택하세요. (만원)', float(df['수입액'].min()), float(df['수입액'].max()))

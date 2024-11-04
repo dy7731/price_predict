@@ -52,7 +52,7 @@ def train_lstm_model(data, target_column):
     model.fit(X_train_norm, y_train_norm,
                     validation_data=(X_test_norm, y_test_norm), epochs=30, batch_size=10, verbose=2)
     
-    return model, scalerX, scalerY
+    return model, scalerX, scalerY,  X_test_norm, y_test_norm
 
 # 예측 함수
 def make_prediction(model, scalerX, scalerY, input_values):
@@ -62,13 +62,18 @@ def make_prediction(model, scalerX, scalerY, input_values):
     # 스케일링
     scaled_input = scalerX.transform(input_df)
     
-    
-    
     # 예측
     prediction = model.predict(scaled_input)
     predicted_price = scalerY.inverse_transform(prediction)
     
     return predicted_price[0][0]
+
+# 성능 평가 함수
+def calculate_metrics(y_true, y_pred):
+    mae = mean_absolute_error(y_true, y_pred)
+    rmse = np.sqrt(mean_squared_error(y_true, y_pred))
+    mape = np.mean(np.abs((y_true - y_pred) / y_true)) * 100  # 퍼센트로 변환
+    return mae, rmse, mape
 
 
 st.sidebar.page_link('pages/cabbage.py', label='배추', icon='🥬')
@@ -90,7 +95,7 @@ with st.sidebar:
     target_column = 'retail price'
     input_values = [수출액, 수출량, 평균기온, 최저기온]
 
-    model, scalerX, scalery = train_lstm_model(df, target_column)
+     model, scalerX, scalerY, X_test_norm, y_test_norm = train_lstm_model(df, target_column)
 
     if st.button('가격 예측하기'):
         predicted_price = make_prediction(model, scalerX, scalery, input_values)

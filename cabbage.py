@@ -10,12 +10,11 @@ from keras.layers import LSTM, Dense, Dropout
 from keras.models import Sequential 
 from keras.optimizers import Adam
 from streamlit_option_menu import option_menu
-
+from sklearn.metrics import mean_absolute_error, mean_squared_error
 st.set_page_config(layout="wide")
 
-
-
 df = pd.read_csv(('./csv/cabbage_week.csv'), index_col='week', encoding="cp949")
+
 
 @st.cache_resource
 def train_lstm_model(data, target_column):
@@ -54,6 +53,7 @@ def train_lstm_model(data, target_column):
     
     return model, scalerX, scalerY,  X_test_norm, y_test_norm
 
+
 # 예측 함수
 def make_prediction(model, scalerX, scalerY, input_values):
     # 입력값을 데이터프레임으로 변환하여 feature names를 유지
@@ -61,6 +61,8 @@ def make_prediction(model, scalerX, scalerY, input_values):
     
     # 스케일링
     scaled_input = scalerX.transform(input_df)
+    
+    
     
     # 예측
     prediction = model.predict(scaled_input)
@@ -76,17 +78,20 @@ def calculate_metrics(y_true, y_pred):
     return mae, rmse, mape
 
 
+
+
+
 st.sidebar.page_link('pages/cabbage.py', label='배추', icon='🥬')
 st.sidebar.page_link('pages/pepper.py', label='고추', icon='🌶️')
 st.sidebar.page_link('pages/onion.py', label='양파', icon='🧅')
-st.sidebar.page_link('pages/radish.py', label='무', icon='🤍')
-st.sidebar.page_link('pages/garlic.py', label='마늘', icon='🧄')
+st.sidebar.page_link('pages/radish.py', label='무', icon='🥔')
+st.sidebar.page_link('pages/garlic.py', label='마늘', icon='🤍')
 
 st.sidebar.markdown('-----------')
 
-
 with st.sidebar:
     
+
     수출액 = st.slider('수출금액를 선택하세요. (만원)',float(df['수출액'].min()),float(df['수출액'].max()))
     수출량 = st.slider('수출량을 선택하세요. (kg)',float(df['수출량'].min()),float(df['수출량'].max()))
     평균기온 = st.slider('평균기온을 선택하세요.',-20,40)
@@ -95,7 +100,7 @@ with st.sidebar:
     target_column = 'retail price'
     input_values = [수출액, 수출량, 평균기온, 최저기온]
 
-     model, scalerX, scalerY, X_test_norm, y_test_norm = train_lstm_model(df, target_column)
+    model, scalerX, scalery,  X_test_norm, y_test_norm = train_lstm_model(df, target_column)
 
     if st.button('가격 예측하기'):
         predicted_price = make_prediction(model, scalerX, scalery, input_values)
@@ -127,7 +132,25 @@ st.line_chart(
         pepper,
         x="week",
         y=["Predicted Values", "actual Values"],
-        color=[ "#32CD32", "#D3D3D3"])
+        color=["#D3D3D3", "#32CD32"])
+
+# 성능 평가 및 결과 출력
+y_test_inverse = scalerY.inverse_transform(y_test_norm)  # 정규화된 y_test 값을 역변환
+y_pred_inverse = model.predict(X_test_norm)  # 정규화된 예측값
+y_pred_inverse = scalerY.inverse_transform(y_pred_inverse)  # 예측값 역변환
+
+mae, rmse, mape = calculate_metrics(y_test_inverse, y_pred_inverse)
+
+metrics_data = {
+    'Metric': ['MAE', 'RMSE', 'MAPE'],
+    'Value': [mae, rmse, mape]
+}
+metrics_df = pd.DataFrame(metrics_data)
+metrics_df.set_index('Metric', inplace=True)  # 'Metric' 컬럼을 인덱스로 설정
+metrics_df.index.name = 'Metrics'  # 인덱스 이름을 'Metrics'로 설정
+
+st.subheader('모델 성능 평가')
+st.table(metrics_df)
 
 
 

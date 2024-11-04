@@ -13,7 +13,7 @@ from streamlit_option_menu import option_menu
 
 st.set_page_config(layout="wide")
 
-df = pd.read_csv('C:/python/졸프/finaldatadata/cabbage_week.csv', index_col='week', encoding="cp949")
+df = pd.read_csv('./csv/cabbage_week.csv', index_col='week', encoding="cp949")
 
 st.sidebar.page_link('pages/cabbage.py', label='배추', icon='🥬')
 st.sidebar.page_link('pages/pepper.py', label='고추', icon='🌶️')
@@ -93,7 +93,7 @@ with st.sidebar:
         predicted_price = make_prediction(model, scalerX, scalerY, input_values)
 
 # 예측 결과 표시
-pepper = pd.read_csv('C:/python/졸프/finaldatadata/onion_predicted.csv', encoding="cp949")
+pepper = pd.read_csv('./csv/onion_predicted.csv', encoding="cp949")
 pepper['week'] = pd.to_datetime(pepper['week'])
 
 st.title('5대 농산물 주간가격 예측 프로젝트')

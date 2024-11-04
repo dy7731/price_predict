@@ -5,7 +5,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, Dense
+from tensorflow.keras.layers import LSTM, Dense, Flatten, Conv1D, MaxPooling1D
 from keras.layers import LSTM, Dense, Dropout
 from keras.models import Sequential 
 from keras.optimizers import Adam

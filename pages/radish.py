@@ -125,7 +125,7 @@ st.text('\n')
 st.line_chart(
         pepper,
         x="week",
-        y=["Predicted_values", "actual_values"],
+        y=["Predicted Values", "actual Values"],
         color=["#D3D3D3", "#32CD32"])
 
 

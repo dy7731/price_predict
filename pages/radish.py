@@ -11,6 +11,9 @@ from keras.models import Sequential
 from keras.optimizers import Adam
 from streamlit_option_menu import option_menu
 from tensorflow.keras.callbacks import EarlyStopping
+from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_percentage_error
 
 st.set_page_config(layout="wide")
 

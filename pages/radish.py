@@ -98,20 +98,20 @@ with st.sidebar:
     model, scalerX, scalery, X_test_norm, y_test_norm = train_lstm_model(df, target_column)
 
     if st.button('가격 예측하기'):
-        predicted_price = make_prediction(model, scalerX, scalery, input_values)
+        predicted_price = make_prediction(model, scalerX, scalerY, input_values)
 
 
 
-pepper = pd.read_csv('./csv/radish_predicted.csv', encoding="cp949")
+radish = pd.read_csv('./csv/radish_predicted.csv', encoding="cp949")
 
-pepper['week'] = pd.to_datetime(pepper['week'])
+radish['week'] = pd.to_datetime(radish['week'])
 
 st.title('5대 농산물 주간가격 예측 프로젝트')
 st.markdown('-----------')
 
 st.text('\n')
 
-predicted_price = make_prediction(model, scalerX, scalery, input_values)
+predicted_price = make_prediction(model, scalerX, scalerY, input_values)
 st.header(f"예측된 무의 가격: {predicted_price:.2f}원")
 
 
@@ -123,7 +123,7 @@ st.text('\n')
 
     
 st.line_chart(
-        pepper,
+        radish,
         x="week",
         y=["Predicted Values", "actual Values"],
         color=["#D3D3D3", "#32CD32"])

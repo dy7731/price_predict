@@ -10,6 +10,7 @@ from keras.layers import LSTM, Dense, Dropout
 from keras.models import Sequential 
 from keras.optimizers import Adam
 from streamlit_option_menu import option_menu
+from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 st.set_page_config(layout="wide")
 

@@ -95,7 +95,7 @@ with st.sidebar:
     target_column = 'retail price'
     input_values = [수출가, 수출량, 물가지수, 평균기온]
 
-    model, scalerX, scalery, X_test_norm, y_test_norm = train_lstm_model(df, target_column)
+    model, scalerX, scalerY, X_test_norm, y_test_norm = train_lstm_model(df, target_column)
 
     if st.button('가격 예측하기'):
         predicted_price = make_prediction(model, scalerX, scalerY, input_values)

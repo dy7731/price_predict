@@ -92,7 +92,7 @@ with st.sidebar:
     model, scalerX, scalerY, X_test_norm, y_test_norm = train_lstm_model(df, target_column)
 
     if st.button('가격 예측하기'):
-        predicted_price = make_prediction(model, scalerX, scalery, input_values)
+        predicted_price = make_prediction(model, scalerX, scalerY, input_values)
     
 
 
@@ -104,7 +104,7 @@ st.title('5대 농산물 가격 예측 프로젝트')
 st.text('\n')
 st.text('\n')
 
-predicted_price = make_prediction(model, scalerX, scalery, input_values)
+predicted_price = make_prediction(model, scalerX, scalerY, input_values)
 st.header(f"예측된 농산물 가격: {predicted_price:.2f}원")
 
 st.text('\n')

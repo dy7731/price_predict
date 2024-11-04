@@ -92,7 +92,7 @@ with st.sidebar:
     평균기온 =st.slider('전국의 평균기온을 선택하세요.',-20,40)
 
     target_column = 'retail price'
-    input_values = [수입가, 수출량, 물가지수, 평균기온]
+    input_values = [수출가, 수출량, 물가지수, 평균기온]
 
     model, scalerX, scalery, X_test_norm, y_test_norm = train_lstm_model(df, target_column)
 

@@ -117,7 +117,7 @@ st.title('5대 농산물 주간가격 예측 프로젝트')
 st.text('\n')
 st.text('\n')
 
-predicted_price = make_prediction(model, scalerX, scalery, input_values)
+predicted_price = make_prediction(model, scalerX, scalerY, input_values)
 st.header(f"예측된 배추의 가격: {predicted_price:.2f}원")
 
 

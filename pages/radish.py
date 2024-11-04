@@ -86,13 +86,13 @@ def calculate_metrics(y_true, y_pred):
 with st.sidebar:
     
 
-    수입가 = st.slider('수출가를 선택하세요. (만원)',float(df['수출가'].min()),float(df['출가'].max()))
+    수출가 = st.slider('수출가를 선택하세요. (만원)',float(df['수출가'].min()),float(df['수출가'].max()))
     수출량 = st.slider('수출량을 선택하세요. (톤)',float(df['수출량'].min()),float(df['수출량'].max()))
     물가지수 = st.slider('양파의 물가지수를 선택하세요.',1,200)
     평균기온 =st.slider('전국의 평균기온을 선택하세요.',-20,40)
 
     target_column = 'retail price'
-    input_values = [수입가, 수출량, 물가지수, 평균기온온]
+    input_values = [수입가, 수출량, 물가지수, 평균기온]
 
     model, scalerX, scalery, X_test_norm, y_test_norm = train_lstm_model(df, target_column)
 

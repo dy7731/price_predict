@@ -15,11 +15,16 @@ st.set_page_config(layout="wide")
 
 df = pd.read_csv('C:/python/졸프/finaldatadata/cabbage_week.csv', index_col='week', encoding="cp949")
 
+st.sidebar.page_link('pages/cabbage.py', label='배추', icon='🥬')
+st.sidebar.page_link('pages/pepper.py', label='고추', icon='🌶️')
+st.sidebar.page_link('pages/onion.py', label='양파', icon='🧅')
+st.sidebar.page_link('pages/radish.py', label='무', icon='🤍')
+st.sidebar.page_link('pages/garlic.py', label='마늘', icon='🧄')
 
 @st.cache_resource
 def train_lstm_model(data, target_column):
     
-    X = data[['수출액','수출량', '평균기온', '최저기온']]  
+    X = data[['환율','생산량', '재배면적']]  
     y = data[['소매가']]  # 종속 변수: 가격
 
     X_train,X_test,y_train,y_test = train_test_split(X,y, test_size=0.2, random_state=42, shuffle=False)
@@ -41,7 +46,7 @@ def train_lstm_model(data, target_column):
     
     # LSTM 모델 구성
     model = Sequential()
-    model.add(LSTM(32, activation='tanh' ,input_shape=(4, 1)))
+    model.add(LSTM(32, activation='tanh' ,input_shape=(3, 1)))
     #model.add(Dense(50, activation='tanh'))
     model.add(Dropout(0.2))  
     model.add(Dense(1))
@@ -51,89 +56,96 @@ def train_lstm_model(data, target_column):
     model.fit(X_train_norm, y_train_norm,
                     validation_data=(X_test_norm, y_test_norm), epochs=30, batch_size=10, verbose=2)
     
-    return model, scalerX, scalerY
+    return model, scalerX, scalerY, X_test_norm, y_test_norm
 
 # 예측 함수
 def make_prediction(model, scalerX, scalerY, input_values):
     # 입력값을 데이터프레임으로 변환하여 feature names를 유지
-    input_df = pd.DataFrame([input_values], columns=['수출액', '수출량', '평균기온', '최저기온'])
+    input_df = pd.DataFrame([input_values], columns=['환율','생산량', '재배면적'])
     
     # 스케일링
     scaled_input = scalerX.transform(input_df)
-    
-    
-    
     # 예측
     prediction = model.predict(scaled_input)
     predicted_price = scalerY.inverse_transform(prediction)
     
     return predicted_price[0][0]
 
+# 성능 평가 함수
+def calculate_metrics(y_true, y_pred):
+    mae = mean_absolute_error(y_true, y_pred)
+    rmse = np.sqrt(mean_squared_error(y_true, y_pred))
+    mape = np.mean(np.abs((y_true - y_pred) / y_true)) * 100  # 퍼센트로 변환
+    return mae, rmse, mape
 
-st.sidebar.page_link('pages/cabbage.py', label='배추', icon='🥬')
-st.sidebar.page_link('pages/pepper.py', label='고추', icon='🌶️')
-st.sidebar.page_link('pages/onion.py', label='양파', icon='🧅')
-st.sidebar.page_link('pages/radish.py', label='무', icon='')
-st.sidebar.page_link('pages/garlic.py', label='마늘', icon='🧄')
+
 
 
 with st.sidebar:
     
-
-    수출액 = st.slider('수출금액를 선택하세요. (만원)',float(df['수출액'].min()),float(df['수출액'].max()))
-    수출량 = st.slider('수출량을 선택하세요. (kg)',float(df['수출량'].min()),float(df['수출량'].max()))
-    평균기온 = st.slider('평균기온을 선택하세요.',-20,40)
-    최저기온 =st.slider('최저기온을 선택하세요.',-20,40)
+    환율 = st.slider('환율(원)을 선택하세요.',800,1500)
+    생산량 = st.slider('생산량을 선택하세요. (톤)',float(df['생산량'].min()),float(df['생산량'].max()))
+    재배면적 = st.slider('재배면적을 선택하세요. (헥타르)',float(df['재배면적'].min()),float(df['재배면적'].max()))
+    
+    
 
     target_column = 'retail price'
-    input_values = [수출액, 수출량, 평균기온, 최저기온]
+    input_values = [환율,생산량, 재배면적]
 
-    model, scalerX, scalery = train_lstm_model(df, target_column)
+    model, scalerX, scalerY, X_test_norm, y_test_norm = train_lstm_model(df, target_column)
 
     if st.button('가격 예측하기'):
-        predicted_price = make_prediction(model, scalerX, scalery, input_values)
+        predicted_price = make_prediction(model, scalerX, scalerY, input_values)
         
     
 
 
 
-pepper = pd.read_csv('C:/python/졸프/finaldatadata/cabbage_predicted.csv', encoding="cp949")
+garlic = pd.read_csv('C:/python/졸프/finaldatadata/garlic_predicted.csv', encoding="cp949")
 
-pepper['week'] = pd.to_datetime(pepper['week'])
+garlic['week'] = pd.to_datetime(garlic['week'])
 
 st.title('5대 농산물 주간가격 예측 프로젝트')
 st.markdown('-----------')
 
 st.text('\n')
 
-predicted_price = make_prediction(model, scalerX, scalery, input_values)
-st.header(f"예측된 배추의 가격: {predicted_price:.2f}원")
+predicted_price = make_prediction(model, scalerX, scalerY, input_values)
+st.header(f"예측된 마늘의 가격: {predicted_price:.2f}원")
 
 
 st.text('\n')
 
 
-st.subheader('배추 소매가 그래프', divider='gray')
+st.subheader('마늘 소매가 그래프', divider='gray')
 st.text('\n')
 
     
 st.line_chart(
-        pepper,
+        garlic,
         x="week",
         y=["Predicted Values", "actual Values"],
         color=["#D3D3D3", "#32CD32"])
 
 
 
-st.text('\n')
-st.header(' Shap value graph')
-st.text('\n')
+# 성능 평가 및 결과 출력
+y_test_inverse = scalerY.inverse_transform(y_test_norm)  # 정규화된 y_test 값을 역변환
+y_pred_inverse = model.predict(X_test_norm)  # 정규화된 예측값
+y_pred_inverse = scalerY.inverse_transform(y_pred_inverse)  # 예측값 역변환
 
-st.image('배추1.png')
-st.text('waterfall 그래프')
-st.image('배추2.png')
-    
+mae, rmse, mape = calculate_metrics(y_test_inverse, y_pred_inverse)
 
+metrics_data = {
+    'Metric': ['MAE', 'RMSE', 'MAPE'],
+    'Value': [mae, rmse, mape]
+}
+metrics_df = pd.DataFrame(metrics_data)
+metrics_df.set_index('Metric', inplace=True)  # 'Metric' 컬럼을 인덱스로 설정
+metrics_df.index.name = 'Metrics'  # 인덱스 이름을 'Metrics'로 설정
+
+st.subheader('모델 성능 평가')
+st.table(metrics_df)
 
 
 

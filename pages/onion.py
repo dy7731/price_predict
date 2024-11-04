@@ -17,10 +17,10 @@ st.set_page_config(layout="wide")
 df = pd.read_csv('./csv/onion_week.csv', index_col='week', encoding="cp949")
 
 st.sidebar.page_link('pages/cabbage.py', label='배추', icon='🥬')
-st.sidebar.page_link('pages/pepper.py', label='고추', icon='🌶️')
 st.sidebar.page_link('pages/onion.py', label='양파', icon='🧅')
-st.sidebar.page_link('pages/radish.py', label='무', icon='🤍')
-st.sidebar.page_link('pages/garlic.py', label='마늘', icon='🧄')
+st.sidebar.page_link('pages/garlic.py', label='마늘', icon='🤍')
+st.sidebar.page_link('pages/radish.py', label='무', icon='🥔')
+st.sidebar.page_link('pages/pepper.py', label='고추', icon='🌶️')
 
 @st.cache_resource
 def train_lstm_model(data, target_column):
